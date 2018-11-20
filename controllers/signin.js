@@ -19,8 +19,17 @@ const handleSignin = (db, bcrypt) => (req, res) => {
       }
     })
     .catch(err => res.status(400).json('wrong credentials'))
-}
+};
+
+const getAuthTokenId = () => {
+  console.log('Auth ok');
+};
+
+const signinAuthentication = (db, bycrypt) => (req, res) => {
+    const { authorization } = req.headers;
+    return authorization ? getAuthTokenId();
+};
 
 module.exports = {
-  handleSignin: handleSignin
-}
+    signinAuthentication: signinAuthentication
+};
