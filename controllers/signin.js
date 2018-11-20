@@ -1,4 +1,4 @@
-const handleSignin = (db, bcrypt) => (req, res) => {
+const handleSignin = (db, bcrypt, req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {
     return res.status(400).json('incorrect form submission');
@@ -27,7 +27,7 @@ const getAuthTokenId = () => {
 
 const signinAuthentication = (db, bycrypt) => (req, res) => {
     const { authorization } = req.headers;
-    return authorization ? getAuthTokenId();
+    return authorization ? getAuthTokenId() : handleSignin(db, bycrypt, req, res);
 };
 
 module.exports = {
