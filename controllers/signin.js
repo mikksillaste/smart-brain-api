@@ -35,6 +35,7 @@ const createSessions = (data) => {
     //create JWT token, return user data
     const { email, id } = user;
     const token = signToken(email);
+    return { success: 'true', userId: id, token }
 };
 
 const signinAuthentication = (db, bycrypt) => (req, res) => {
@@ -42,8 +43,9 @@ const signinAuthentication = (db, bycrypt) => (req, res) => {
     return authorization ? getAuthTokenId() :
         handleSignin(db, bycrypt, req, res)
             .then(data => {
-                data.id && data.email ? createSessions(data) : Promise.reject(data)
+                return data.id && data.email ? createSessions(data) : Promise.reject(data)
             })
+            .then(session => res.json(session))
             .catch(err => res.status(400).json(err))
 };
 
